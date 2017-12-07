@@ -24,6 +24,10 @@ public class Game {
     return Colour.BLACK;
   }
 
+  public int getMoveListLength() {
+    return moveList.size();
+  }
+
   public Move getLastMove() {
     if (index == 0) {
       return null;
@@ -57,15 +61,11 @@ public class Game {
     for (int y = 0; y < 8; y++) {
       for (int x = 0; x < 8; x++) {
         Colour condition = gameboard.getSquare(x, y).OccupiedBy();
-        if (y == 0) {
-          if (condition == Colour.WHITE) {
-            return true;
-          }
+        if (y == 7 && condition == Colour.WHITE) {
+          return true;
         }
-        if (y == 7) {
-          if (condition == Colour.BLACK) {
-            return true;
-          }
+        if (y == 0 && condition == Colour.BLACK) {
+          return true;
         }
         if (condition == Colour.WHITE) {
           whites = true;
@@ -75,16 +75,16 @@ public class Game {
         }
       }
     }
-    return (whites && blacks);
+    return (false);
   }
 
   /*public Boolean isStalemate() {
-    return (Player.getAllValidMoves.length == 0);
+    return (getAllValidMoves().length == 0);
   }*/
 
 
   public Colour getGameResult() {
-    if (isFinished()) {
+    if (isFinished() == true) {
       return player;
     }
     /*if (isStalemate()) {
@@ -95,8 +95,8 @@ public class Game {
 
   public Move parseMove(String san) {
     String moveType = san.charAt(2) + "";
-    Square from = new Square(Character.getNumericValue(getInt(san.charAt(0))), Character.getNumericValue(san.charAt(1))-1);
-    Square to = new Square(Character.getNumericValue(getInt(san.charAt(3))), Character.getNumericValue(san.charAt(4))-1);
+    Square from = new Square(Character.getNumericValue(san.charAt(1))-1, (getInt(san.charAt(0))));
+    Square to = new Square(Character.getNumericValue(san.charAt(4))-1, (getInt(san.charAt(3))));
     if (moveType == "-") {
       return new Move(from, to, false, false);
     }
@@ -107,9 +107,7 @@ public class Game {
   }
 
   private int getInt(char xRef) {
-    return xRef - 'a';
+    return xRef - 'A';
   }
 
 }
-
-

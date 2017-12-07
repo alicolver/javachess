@@ -6,18 +6,18 @@ public class Board {
   private Square[][] board = new Square[dim][dim];
 
   public Board(char wG, char bG) {
-    for (int y = 0; y < dim; y++) {
-      for (int x = 0; x < dim; x++) {
+    for (int x= 0; x < dim; x++) {
+      for (int y = 0; y < dim; y++) {
         if (y == 1 && x != (wG - 'a')) {
-          board[y][x] = new Square(x, y);
-          board[y][x].setOccupier(Colour.WHITE);
+          board[x][y] = new Square(x, y);
+          board[x][y].setOccupier(Colour.WHITE);
         }
         else if (y == 6 & x != (bG - 'a')) {
-          board[y][x] = new Square(x, y);
-          board[y][x].setOccupier(Colour.BLACK);
+          board[x][y] = new Square(x, y);
+          board[x][y].setOccupier(Colour.BLACK);
         }
         else {
-          board[y][x] = new Square(x, y);
+          board[x][y] = new Square(x, y);
         }
       }
     }
@@ -28,13 +28,13 @@ public class Board {
   }
 
   public void applyMove(Move move) {
-    board[(move.getTo().getX())][move.getTo().getY()].setOccupier(move.getFrom().OccupiedBy());
+    board[move.getTo().getX()][move.getTo().getY()].setOccupier(move.getFrom().OccupiedBy());
     board[move.getFrom().getX()][move.getFrom().getY()].setOccupier(Colour.NONE);
     if (move.isEnPassantCapture()) {
       if (move.getFrom().OccupiedBy() == Colour.BLACK) {
-        board[move.getTo().getX()][move.getTo().getY() + 1].setOccupier(Colour.NONE);
+        board[move.getTo().getY() - 1][move.getTo().getX()].setOccupier(Colour.NONE);
       } else {
-        board[move.getTo().getX()][move.getTo().getY() - 1].setOccupier(Colour.NONE);
+        board[move.getTo().getY() + 1][move.getTo().getX()].setOccupier(Colour.NONE);
       }
     }
   }
@@ -59,19 +59,19 @@ public class Board {
     for (int y = 0; y < 8; y++) {
       System.out.print((y+1) + "  ");
       for (int x = 0; x < 8; x++) {
-        if (getSquare(y, x).OccupiedBy() == Colour.NONE) {
+        if (getSquare(x, y).OccupiedBy() == Colour.NONE) {
           System.out.print(". ");
         }
-        else if (getSquare(y, x).OccupiedBy() == Colour.WHITE) {
-          System.out.print((char) 9823 + " ");
-        } else {
+        else if (getSquare(x, y).OccupiedBy() == Colour.WHITE) {
           System.out.print((char) 9817 + " ");
+        } else {
+          System.out.print((char) 9823 + " ");
         }
       }
       System.out.println(" " + (y + 1));
     }
     System.out.println("");
-    System.out.print("   A B C D E F G H");
+    System.out.println("   A B C D E F G H");
   }
 
 }
